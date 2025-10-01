@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciamento de Estoque</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, button { margin: 5px; padding: 5px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Estoque</h1>
+
+  <h3>Adicionar Item</h3>
+  <input type="number" id="id" placeholder="ID">
+  <input type="text" id="nome" placeholder="Nome">
+  <input type="number" id="quantidade" placeholder="Quantidade">
+  <button onclick="criarItem()">Adicionar</button>
+
+  <h3>Atualizar Item</h3>
+  <input type="number" id="updateId" placeholder="ID">
+  <input type="text" id="updateNome" placeholder="Novo Nome">
+  <input type="number" id="updateQuantidade" placeholder="Nova Quantidade">
+  <button onclick="atualizarItem()">Atualizar</button>
+
+  <h3>Excluir Item</h3>
+  <input type="number" id="deleteId" placeholder="ID">
+  <button onclick="deletarItem()">Excluir</button>
+
+  <h3>Lista de Itens</h3>
+  <button onclick="listarItens()">Recarregar Lista</button>
+  <table id="tabela">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Quantidade</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const api = "http://localhost:3000/items";
+
+    async function listarItens() {
+      const res = await fetch(api);
+      const data = await res.json();
+      const tbody = document.querySelector("#tabela tbody");
+      tbody.innerHTML = "";
+      data.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.id}</td>
+          <td>${item.nome}</td>
+          <td>${item.quantidade}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function criarItem() {
+      const id = document.getElementById("id").value;
+      const nome = document.getElementById("nome").value;
+      const quantidade = document.getElementById("quantidade").value;
+
+      await fetch(api, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, nome, quantidade })
+      });
+
+      listarItens();
+    }
+
+    async function atualizarItem() {
+      const id = document.getElementById("updateId").value;
+      const nome = document.getElementById("updateNome").value;
+      const quantidade = document.getElementById("updateQuantidade").value;
+
+      await fetch(`${api}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, quantidade })
+      });
+
+      listarItens();
+    }
+
+    async function deletarItem() {
+      const id = document.getElementById("deleteId").value;
+
+      await fetch(`${api}/${id}`, { method: "DELETE" });
+
+      listarItens();
+    }
+
+    
+    listarItens();
+  </script>
+</body>
+</html>
