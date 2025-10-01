@@ -6,8 +6,9 @@ let estoque = [
 
 
 const getItems = (req, res) => {
-  res.json(estoque);
+       res.json(estoque);
 }
+//Professor, esse aqui sou eu em kkkkk, O erro foi que, o array está escrito de forma errada (estoquee) e nao (estoque.)
 
 
 const createItem = (req, res) => {
