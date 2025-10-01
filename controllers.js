@@ -13,13 +13,14 @@ let estoque = [{
 }]
 
 const getItems = (req, res) => {
-       res.json(estoquee);
+       res.json(estoque);
 }
+//Professor, esse aqui sou eu em kkkkk, O erro foi que, o array está escrito de forma errada (estoquee) e nao (estoque.)
 
 const createItem = (req, res) => {
     const { id, nome, quantidade } = req.body;
-    estoque.push({ id: String(id), nome, quantidade });
-
+    estoque.push({ id: Number(id), nome, quantidade });
+//Outra nao padronização é o id, que está como String mas deve estar como Number
     res.status(201).json({ message: 'Item criado com sucesso!' });
 }
 
