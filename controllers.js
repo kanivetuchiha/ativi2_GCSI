@@ -13,9 +13,9 @@ let estoque = [{
 }]
 
 const getItems = (req, res) => {
-       res.json(estoquee);
+       res.json(estoque);
 }
-
+//Bom, olha eu aqui de novo, como já foi dito, o array (estoque) está escrito errado(estoquee)
 const createItem = (req, res) => {
     const { id, nome, quantidade } = req.body;
     estoque.push({ id: String(id), nome, quantidade });
